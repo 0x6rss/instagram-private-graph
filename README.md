@@ -1,3 +1,7 @@
+[https://github.com/Root0ne](https://github.com/Root0ne)
+
+The academic and technical details of this project will soon be presented to the literature by [@Root0ne](https://github.com/Root0ne). The idea for the project was inspired by his work. Many thanks to [@Root0ne](https://github.com/Root0ne).
+
 # Instagram OSINT Relationship Analysis
 
 This project is a local research application for the social-media portion of
