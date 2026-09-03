@@ -11,6 +11,10 @@ corroboration in legitimate OSINT work. It is not an identity-resolution
 system, follower-list bypass, surveillance service, or source of factual
 relationship declarations.
 
+## Interface preview
+
+![Instagram Private Graph network analysis interface](ss.png)
+
 ## Read this before use
 
 The displayed numbers are algorithmic model-confidence scores. They are not
