@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Instagram OSINT</title>
+<link rel="stylesheet" href="/static/styles.css?v=20260903r">
+<link rel="stylesheet" href="/static/reference-ui.css?v=20260903r">
+</head>
+<body>
+
+                                                                                    
+<svg class="ui-icon-sprite" aria-hidden="true" focusable="false">
+  <symbol id="ui-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.86 2.86-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6l-.04.08V21h-4v-.92A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.86-2.86.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1l-.08-.04H3v-4h.92A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06L7.06 4.2l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6l.04-.08V3h4v.92A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.86 2.86-.06.06A1.7 1.7 0 0 0 19.4 9c.13.4.36.74.68 1H21v4h-.92c-.32.26-.55.6-.68 1Z"></path></symbol>
+  <symbol id="ui-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5"></path><path d="M19 12a7 7 0 1 0-2.05 4.95"></path></symbol>
+  <symbol id="ui-zap" viewBox="0 0 24 24"><path d="m13 2-9 12h8l-1 8 9-12h-8l1-8Z"></path></symbol>
+  <symbol id="ui-alert-triangle" viewBox="0 0 24 24"><path d="M10.3 3.7 2.4 17.4A2 2 0 0 0 4.1 20h15.8a2 2 0 0 0 1.7-2.6L13.7 3.7a2 2 0 0 0-3.4 0Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></symbol>
+  <symbol id="ui-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"></path></symbol>
+  <symbol id="ui-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></symbol>
+  <symbol id="ui-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></symbol>
+  <symbol id="ui-shield-check" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.7 2.9 8 7 10 4.1-2 7-5.3 7-10V6l-7-3Z"></path><path d="m8.7 12 2.1 2.1 4.6-4.6"></path></symbol>
+  <symbol id="ui-shield-alert" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.7 2.9 8 7 10 4.1-2 7-5.3 7-10V6l-7-3Z"></path><path d="M12 8v5M12 16h.01"></path></symbol>
+  <symbol id="ui-signal-high" viewBox="0 0 24 24"><path d="M5 18v-3M10 18v-6M15 18V9M20 18V5"></path></symbol>
+  <symbol id="ui-signal-medium" viewBox="0 0 24 24"><path d="M5 18v-3M10 18v-6M15 18V9M20 18V5" opacity=".25"></path><path d="M5 18v-3M10 18v-6M15 18V9"></path></symbol>
+  <symbol id="ui-signal-low" viewBox="0 0 24 24"><path d="M5 18v-3M10 18v-6M15 18V9M20 18V5" opacity=".25"></path><path d="M5 18v-3M10 18v-6"></path></symbol>
+  <symbol id="ui-signal-none" viewBox="0 0 24 24"><path d="M5 18v-3M10 18v-6M15 18V9M20 18V5" opacity=".28"></path><path d="m5 5 14 14"></path></symbol>
+  <symbol id="ui-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></symbol>
+  <symbol id="ui-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0M16 5.5a3 3 0 0 1 0 5.5M16 14a5 5 0 0 1 5 5"></path></symbol>
+  <symbol id="ui-file-text" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5M9 12h6M9 16h6"></path></symbol>
+  <symbol id="ui-network" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"></circle><circle cx="5" cy="18" r="2.5"></circle><circle cx="19" cy="18" r="2.5"></circle><path d="m10.8 7.2-4.5 8.5M13.2 7.2l4.5 8.5M7.5 18h9"></path></symbol>
+  <symbol id="ui-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path></symbol>
+  <symbol id="ui-activity" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"></path></symbol>
+  <symbol id="ui-zoom-in" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"></path></symbol>
+  <symbol id="ui-zoom-out" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5M7.5 10.5h6"></path></symbol>
+  <symbol id="ui-maximize" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></symbol>
+  <symbol id="ui-chevron-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"></path></symbol>
+  <symbol id="ui-external-link" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"></path><path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"></path></symbol>
+  <symbol id="ui-arrow-left-right" viewBox="0 0 24 24"><path d="M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4"></path></symbol>
+  <symbol id="ui-arrow-left" viewBox="0 0 24 24"><path d="m10 5-7 7 7 7M3 12h18"></path></symbol>
+  <symbol id="ui-arrow-right" viewBox="0 0 24 24"><path d="m14 5 7 7-7 7M21 12H3"></path></symbol>
+  <symbol id="ui-arrow-down-right" viewBox="0 0 24 24"><path d="M7 7h10v10M17 17 7 7"></path></symbol>
+  <symbol id="ui-heart" viewBox="0 0 24 24"><path d="M20.8 5.7a5.4 5.4 0 0 0-7.7 0L12 6.8l-1.1-1.1a5.4 5.4 0 1 0-7.7 7.7L12 22l8.8-8.6a5.4 5.4 0 0 0 0-7.7Z"></path></symbol>
+  <symbol id="ui-message-circle" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9.8 9.8 0 0 1-4-.9L3 21l1.8-4.7A8.5 8.5 0 1 1 21 11.5Z"></path></symbol>
+  <symbol id="ui-tag" viewBox="0 0 24 24"><path d="M20 13 13 20l-9-9V4h7z"></path><circle cx="8.5" cy="8.5" r="1"></circle></symbol>
+  <symbol id="ui-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"></path></symbol>
+  <symbol id="ui-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></symbol>
+  <symbol id="ui-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"></path></symbol>
+  <symbol id="ui-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></symbol>
+  <symbol id="ui-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></symbol>
+  <symbol id="ui-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></symbol>
+  <symbol id="ui-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></symbol>
+  <symbol id="ui-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.2 3.8L17 8l-3.8 1.2L12 13l-1.2-3.8L7 8l3.8-1.2zM19 14l.7 2.3L22 17l-2.3.7L19 20l-.7-2.3L16 17l2.3-.7zM5 14l.6 1.9 1.9.6-1.9.6L5 19l-.6-1.9-1.9-.6 1.9-.6z"></path></symbol>
+  <symbol id="ui-code" viewBox="0 0 24 24"><path d="m8 5-6 7 6 7M16 5l6 7-6 7M14 3l-4 18"></path></symbol>
+  <symbol id="ui-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8.5" cy="9" r="1.5"></circle><path d="m3 17 5-5 4 4 3-3 6 6"></path></symbol>
+  <symbol id="ui-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M7 3v4M17 3v4M3 10h18"></path></symbol>
+  <symbol id="ui-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></symbol>
+  <symbol id="ui-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="2.5"></circle></symbol>
+  <symbol id="ui-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></symbol>
+  <symbol id="ui-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></symbol>
+  <symbol id="ui-cake" viewBox="0 0 24 24"><path d="M4 14h16v7H4zM6 10h12v4H6zM9 10V7M12 10V6M15 10V7"></path><path d="M9 5c0-1 1-2 1-2s1 1 1 2M12 4c0-1 1-2 1-2s1 1 1 2M15 5c0-1 1-2 1-2s1 1 1 2"></path></symbol>
+  <symbol id="ui-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"></circle></symbol>
+  <symbol id="ui-percent" viewBox="0 0 24 24"><path d="m6 19 12-14"></path><circle cx="7" cy="7" r="2"></circle><circle cx="17" cy="17" r="2"></circle></symbol>
+  <symbol id="ui-volume-x" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4zM17 9l5 6M22 9l-5 6"></path></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="top-status" aria-live="polite">
+    <span class="status-pulse"></span>
+    <span id="status" class="status"></span>
+    <button id="phaseBtn" title="Analysis settings" data-i18n-title="actions.settings" type="button" aria-label="Analysis settings" data-i18n-aria-label="actions.settings"><svg class="ui-icon" aria-hidden="true"><use href="#ui-settings"></use></svg></button>
+  </div>
+
+  <div class="brand" data-i18n="app.title">Instagram OSINT</div>
+
+  <div class="header-actions">
+    <button id="runBtn" aria-label="Recalculate" data-i18n-aria-label="actions.recalculate" title="Recalculate" data-i18n-title="actions.recalculate"><svg class="ui-icon" aria-hidden="true"><use href="#ui-zap"></use></svg><span data-i18n="actions.recalculate">Recalculate</span></button>
+    <button id="reloadBtn" aria-label="Refresh" data-i18n-aria-label="actions.refresh" title="Refresh" data-i18n-title="actions.refresh"><svg class="ui-icon" aria-hidden="true"><use href="#ui-refresh"></use></svg><span data-i18n="actions.refresh">Refresh</span></button>
+    <label class="language-control" title="Language" data-i18n-title="language.label">
+      <svg class="ui-icon" aria-hidden="true"><use href="#ui-globe"></use></svg>
+      <select id="languageSelect" aria-label="Language" data-i18n-aria-label="language.label">
+        <option value="en" lang="en" selected>English</option>
+        <option value="tr" lang="tr">Türkçe</option>
+        <option value="zh-CN" lang="zh-Hans">简体中文</option>
+        <option value="ru" lang="ru">Русский</option>
+      </select>
+    </label>
+  </div>
+
+  <section class="central-search" aria-label="Instagram username" data-i18n-aria-label="search.placeholder">
+    <div class="query-frame">
+      <span class="search-mark" aria-hidden="true"></span>
+      <input type="text" id="newQuery" placeholder="Instagram username" data-i18n-placeholder="search.placeholder"
+             autocomplete="off" spellcheck="false" maxlength="30"
+             aria-label="Instagram username" data-i18n-aria-label="search.placeholder">
+      <button id="queryBtn" class="primary">
+        <span class="query-orb" aria-hidden="true"></span>
+        <span data-i18n="actions.search">Search</span>
+      </button>
+    </div>
+    <div class="query-options">
+      <label class="target-select-label"><span data-i18n="search.target">Target</span>
+        <select id="userSelect" aria-label="Target" data-i18n-aria-label="search.target"></select>
+      </label>
+    </div>
+  </section>
+</header>
+
+                                
+<div id="phasePopover" class="popover hidden">
+  <div class="pop-title" data-i18n="phase.title">Analysis sections (default: fast)</div>
+  <div id="phaseList" class="phase-list"></div>
+  <div class="pop-title" style="margin-top:.7em" data-i18n="phase.depth">Network scan depth</div>
+  <div style="display:flex;align-items:center;gap:.5em;margin-bottom:.5em">
+    <select id="chainMulti" style="background:var(--bg3);color:var(--fg);border:1px solid var(--line);border-radius:4px;padding:.35em .55em;font-family:var(--mono)">
+      <option value="5" selected>5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+    </select>
+    <span class="muted" data-i18n="phase.repetitions">repetitions</span>
+  </div>
+  <div class="muted" style="font-size:.7em;font-family:var(--mono);margin-bottom:.5em">
+    <span data-i18n="phase.depthHelp">Repeats discovery and chaining. Higher values can find more candidates and strengthen repeated signals.</span>
+    <div class="rate-limit-note" style="color:var(--accent2);margin-top:.35em"><svg class="ui-icon" aria-hidden="true"><use href="#ui-alert-triangle"></use></svg><span data-i18n="phase.rateWarning">Values 6–15 take longer and may trigger Instagram rate limits.</span></div>
+  </div>
+  <label class="chk popover-drop-control">
+    <input type="checkbox" id="dropAlgo">
+    <span data-i18n="phase.excludeWeak">Exclude weak algorithmic suggestions</span>
+  </label>
+  <div class="pop-actions">
+    <button id="phaseAll" data-i18n="actions.all">All</button>
+    <button id="phaseNone" data-i18n="actions.none">None</button>
+    <button id="phaseFast" title="presence + chain + internal + reciprocal + banyan" data-i18n="actions.fast">Fast</button>
+    <button id="phaseClose" data-i18n="actions.done">Done</button>
+  </div>
+</div>
+
+                        
+<div id="logModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="logTitle">
+  <div class="modal-inner">
+    <div class="modal-head">
+      <div class="log-heading">
+        <span class="log-kicker" data-i18n="log.live">LIVE ANALYSIS</span>
+        <h2 id="logTitle">Analysis progress</h2>
+        <span id="logMeta" class="muted"></span>
+      </div>
+      <button id="logClose" class="x" aria-label="Done" data-i18n-aria-label="actions.done"><svg class="ui-icon" aria-hidden="true"><use href="#ui-close"></use></svg></button>
+    </div>
+    <div id="logOverview" class="log-overview is-info">
+      <span class="log-overview-mark" aria-hidden="true"><svg class="ui-icon"><use href="#ui-info"></use></svg></span>
+      <div>
+        <b id="logProgressTitle">Preparing</b>
+        <span id="logProgressText">Preparing analysis steps.</span>
+      </div>
+    </div>
+    <div id="logProgress" class="log-progress" role="progressbar" aria-label="Analysis progress" data-i18n-aria-label="log.progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <i id="logProgressBar"></i>
+    </div>
+    <div id="logPre" class="log-pre" role="log" aria-live="polite" aria-relevant="additions"></div>
+    <details class="log-raw">
+      <summary data-i18n="log.rawShow">Show technical details</summary>
+      <pre id="logRawPre" class="log-raw-pre"></pre>
+    </details>
+    <div class="modal-foot">
+      <span id="logStatus" class="log-status">Preparing</span>
+      <button id="logCancel" class="warn" data-i18n="actions.stop">Stop analysis</button>
+    </div>
+  </div>
+</div>
+
+<main id="main" class="hidden">
+  <section class="stats" aria-label="SUMMARY" data-i18n-aria-label="panel.summary">
+    <div class="stat-card t-intimate">
+      <div class="label" data-i18n="stats.verified">Very high confidence</div>
+      <div class="value" id="statIntimate">0</div>
+      <div class="sub" data-i18n="stats.thresholdVeryHigh">Score ≥ 99</div>
+    </div>
+    <div class="stat-card t-known">
+      <div class="label" data-i18n="stats.high">High confidence</div>
+      <div class="value" id="statKnown">0</div>
+      <div class="sub" data-i18n="stats.thresholdHigh">Score ≥ 80</div>
+    </div>
+    <div class="stat-card t-acq">
+      <div class="label" data-i18n="stats.medium">Medium confidence</div>
+      <div class="value" id="statAcq">0</div>
+      <div class="sub" data-i18n="stats.thresholdMedium">Score ≥ 40</div>
+    </div>
+    <div class="stat-card t-algo">
+      <div class="label" data-i18n="stats.low">Low confidence</div>
+      <div class="value" id="statAlgo">0</div>
+      <div class="sub" data-i18n="stats.thresholdLow">Score ≥ 15</div>
+    </div>
+    <div class="stat-card t-noise">
+      <div class="label" data-i18n="stats.noise">Insufficient / unknown</div>
+      <div class="value" id="statNoise">0</div>
+      <div class="sub" data-i18n="stats.thresholdInsufficient">Score &lt; 15 or none</div>
+    </div>
+    <div class="stat-card total">
+      <div class="label" data-i18n="stats.total">Total</div>
+      <div class="value" id="statTotal">0</div>
+      <div class="sub" id="statBidir"></div>
+    </div>
+  </section>
+
+  <section class="workspace">
+    <aside class="target-rail shell-panel">
+      <div class="target-primary-card">
+        <div class="panel-kicker" data-i18n="panel.target">TARGET</div>
+        <div class="target-identity">
+          <div id="targetRailAvatar" class="target-rail-avatar"></div>
+          <div class="target-identity-copy">
+            <strong id="statTarget">—</strong>
+            <span id="statTargetPk" class="mono"></span>
+            <div id="targetRailMeta" class="target-rail-meta"></div>
+          </div>
+        </div>
+        <div class="target-links">
+          <a id="targetInstagramLink" href="#" target="_blank" rel="noopener">Instagram</a>
+          <a id="targetThreadsLink" href="#" target="_blank" rel="noopener">Threads</a>
+        </div>
+        <div class="rail-divider"></div>
+        <div class="panel-kicker rail-section-title" data-i18n="panel.summary">SUMMARY</div>
+        <div class="summary-list">
+          <div class="summary-row verified"><span class="summary-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-shield-check"></use></svg></span><span data-i18n="stats.verified">Very high confidence</span><b id="targetSumVerified">0</b></div>
+          <div class="summary-row high"><span class="summary-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-signal-high"></use></svg></span><span data-i18n="stats.high">High confidence</span><b id="targetSumHigh">0</b></div>
+          <div class="summary-row medium"><span class="summary-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-signal-medium"></use></svg></span><span data-i18n="stats.medium">Medium confidence</span><b id="targetSumMedium">0</b></div>
+          <div class="summary-row low"><span class="summary-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-signal-low"></use></svg></span><span data-i18n="stats.low">Low confidence</span><b id="targetSumLow">0</b></div>
+          <div class="summary-row noise"><span class="summary-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-signal-none"></use></svg></span><span data-i18n="stats.noise">Insufficient / unknown</span><b id="targetSumNoise">0</b></div>
+          <div class="summary-row total"><span class="summary-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-users"></use></svg></span><span data-i18n="stats.total">Total</span><b id="targetSumTotal">0</b></div>
+        </div>
+      </div>
+      <div class="rail-report-card">
+        <div class="report-symbol" aria-hidden="true"><svg class="ui-icon"><use href="#ui-file-text"></use></svg></div>
+        <div>
+          <span class="panel-kicker" data-i18n="panel.report">REPORT</span>
+          <strong data-i18n="panel.relationship">Relationship analysis</strong>
+          <p id="targetReportPreview" class="mono"></p>
+          <button id="targetReportBtn"><span data-i18n="actions.openReport">Open report</span><span><svg class="ui-icon" aria-hidden="true"><use href="#ui-chevron-right"></use></svg></span></button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="center-column">
+      <div class="content-stage">
+        <section id="tab-graph" class="tab-panel active graph-panel">
+          <div class="graph-topline">
+            <span id="graphStats" class="muted"></span>
+            <div class="graph-actions" aria-label="Graph controls">
+              <label class="graph-mobile-score"><span data-i18n="common.minScore">min score</span>
+                <input type="number" id="graphMinScoreMobile" value="20" step="5" min="0" max="100">
+              </label>
+              <button id="graphZoomOut" title="Zoom out" data-i18n-title="graph.zoomOut" aria-label="Zoom out" data-i18n-aria-label="graph.zoomOut"><svg class="ui-icon" aria-hidden="true"><use href="#ui-zoom-out"></use></svg></button>
+              <button id="graphZoomIn" title="Zoom in" data-i18n-title="graph.zoomIn" aria-label="Zoom in" data-i18n-aria-label="graph.zoomIn"><svg class="ui-icon" aria-hidden="true"><use href="#ui-zoom-in"></use></svg></button>
+              <button id="graphFit" title="Fit graph" data-i18n-title="graph.fit" aria-label="Fit graph" data-i18n-aria-label="graph.fit"><svg class="ui-icon" aria-hidden="true"><use href="#ui-maximize"></use></svg></button>
+              <button id="graphRedraw" title="Reset graph view" data-i18n-title="graph.reset" aria-label="Reset graph view" data-i18n-aria-label="graph.reset"><svg class="ui-icon" aria-hidden="true"><use href="#ui-refresh"></use></svg></button>
+            </div>
+          </div>
+          <div class="graph-canvas-shell">
+            <div class="graph-legend" aria-label="Model confidence categories" data-i18n-aria-label="graph.legend">
+              <div><i class="verified"></i><span data-i18n="stats.verified">Very high confidence</span></div>
+              <div><i class="high"></i><span data-i18n="stats.high">High confidence</span></div>
+              <div><i class="medium"></i><span data-i18n="stats.medium">Medium confidence</span></div>
+              <div><i class="low"></i><span data-i18n="stats.low">Low confidence</span></div>
+              <div><i class="noise"></i><span data-i18n="stats.noise">Insufficient / unknown</span></div>
+            </div>
+            <div class="graph-metrics">
+              <span class="panel-kicker" data-i18n="graph.metrics">METRICS</span>
+              <div><span data-i18n="graph.visibleNodes">visible nodes</span><b id="graphVisibleMetric">0</b></div>
+              <div><span data-i18n="graph.totalPeople">total people</span><b id="graphTotalMetric">0</b></div>
+              <div><span data-i18n="graph.minimumScore">minimum score</span><b id="graphMinMetric">20</b></div>
+            </div>
+            <div id="graphContainer"></div>
+          </div>
+        </section>
+
+        <section id="tab-people" class="tab-panel">
+          <div class="filters" aria-label="People filters">
+            <label class="filter-search">
+              <input type="search" id="searchBox" placeholder="Search username or name…" data-i18n-placeholder="filter.search"
+                     aria-label="Search username or name…" data-i18n-aria-label="filter.search">
+            </label>
+            <label class="filter-score-control">
+              <span data-i18n="filter.atLeast">At least</span>
+              <input type="number" id="minScore" value="0" step="5" min="0" max="100"
+                     aria-label="At least">
+              <b>%</b>
+            </label>
+            <div class="filter-group filter-probability" role="group" aria-label="Model confidence" data-i18n-aria-label="filter.probability">
+              <span class="filter-caption" data-i18n="filter.probability">Model confidence</span>
+              <span class="filter-tier-group">
+                <label class="chk-tier"><input type="checkbox" data-tier="verified" checked><span data-i18n="stats.veryHigh">Very high confidence</span></label>
+                <label class="chk-tier"><input type="checkbox" data-tier="high_probability" checked><span data-i18n="stats.highShort">High confidence</span></label>
+                <label class="chk-tier"><input type="checkbox" data-tier="medium_probability"><span data-i18n="stats.mediumShort">Medium confidence</span></label>
+                <label class="chk-tier"><input type="checkbox" data-tier="low_probability"><span data-i18n="stats.lowShort">Low confidence</span></label>
+                <label class="chk-tier"><input type="checkbox" data-tier="noise"><span data-i18n="stats.weak">Insufficient / unknown</span></label>
+              </span>
+            </div>
+            <div class="filter-group filter-profile" role="group" aria-label="Profile" data-i18n-aria-label="filter.profile">
+              <span class="filter-caption" data-i18n="filter.profile">Profile</span>
+              <span class="filter-flag-group">
+                <label class="chk"><input type="checkbox" id="flagPriv"><span data-i18n="filter.private">Private</span></label>
+                <label class="chk"><input type="checkbox" id="flagVer"><span data-i18n="filter.blueTick">Verified account</span></label>
+              </span>
+            </div>
+            <span id="visibleCount" class="filter-count muted" aria-live="polite"></span>
+          </div>
+          <div class="table-wrap">
+            <table id="peopleTable">
+              <thead><tr>
+                <th data-sort="tier_rank">#</th>
+                <th data-sort="username" data-i18n="table.user">User</th>
+                <th data-sort="score" data-i18n="table.probability">Model score ▾</th>
+                <th data-sort="tier" data-i18n="table.signal">Signal</th>
+                <th data-i18n="table.evidence">Evidence</th>
+              </tr></thead>
+              <tbody id="peopleBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="tab-target" class="tab-panel">
+          <div id="targetIntel" class="target-intel"></div>
+        </section>
+
+        <section id="tab-bootstrap" class="tab-panel">
+          <div id="bootstrapContent"></div>
+        </section>
+
+        <section id="tab-report" class="tab-panel">
+          <div id="reportContent" class="report-view"></div>
+        </section>
+      </div>
+    </section>
+
+    <aside class="people-rail shell-panel">
+      <div class="people-rail-head">
+        <div><span class="panel-kicker" data-i18n="panel.people">PEOPLE</span><b id="peopleRailCount">0</b></div>
+        <label><span data-i18n="common.minScore">min score</span><input type="number" id="graphMinScore" value="20" step="5" min="0" max="100"></label>
+      </div>
+      <div id="peopleRailList" class="people-rail-list"></div>
+      <button id="peopleRailAll" class="people-view-all"><span data-i18n="actions.viewAll">View all people</span><span><svg class="ui-icon" aria-hidden="true"><use href="#ui-chevron-right"></use></svg></span></button>
+    </aside>
+  </section>
+
+  <nav class="tabs" aria-label="Main sections">
+    <button data-tab="people" class="tab"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-users"></use></svg></span><span data-i18n="nav.people">People</span></button>
+    <button data-tab="graph" class="tab active"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-network"></use></svg></span><span data-i18n="nav.network">Network graph</span></button>
+    <button data-tab="target" class="tab"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-target"></use></svg></span><span data-i18n="nav.target">Target</span></button>
+    <button data-tab="bootstrap" class="tab"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-activity"></use></svg></span><span data-i18n="nav.signals">Signals</span></button>
+    <button data-tab="report" class="tab"><span class="nav-icon"><svg class="ui-icon" aria-hidden="true"><use href="#ui-file-text"></use></svg></span><span data-i18n="nav.report">Report</span></button>
+  </nav>
+</main>
+
+                          
+<aside id="detailPanel" class="detail hidden">
+  <div class="detail-head">
+    <button id="detailClose" class="x" aria-label="Done" data-i18n-aria-label="actions.done"><svg class="ui-icon" aria-hidden="true"><use href="#ui-close"></use></svg></button>
+    <h2 id="detailUsername">—</h2>
+    <div class="detail-meta">
+      <span id="detailPk" class="mono"></span>
+      <span id="detailTier" class="badge"></span>
+      <span id="detailScore" class="score"></span>
+    </div>
+  </div>
+  <div id="detailBody"></div>
+</aside>
+
+<script src="/static/i18n.js?v=20260903t"></script>
+<script src="/static/app.js?v=20260903t"></script>
+</body>
+</html>

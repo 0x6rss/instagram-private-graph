@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+data/artifacts/
+backend/relationship_engine/apiler/
